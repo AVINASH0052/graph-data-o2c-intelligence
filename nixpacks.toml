@@ -1,0 +1,29 @@
+[variables]
+PYTHONUNBUFFERED = "1"
+
+[phases.setup]
+nixPkgs = [
+  "python311Full",
+  "python311Packages.pip",
+  "python311Packages.setuptools",
+  "python311Packages.wheel",
+  "nodejs_20",
+  "gcc",
+  "gnumake"
+]
+
+[phases.install]
+cmds = [
+  "python -c \"import importlib.util,subprocess,sys,urllib.request; importlib.util.find_spec('pip') or (urllib.request.urlretrieve('https://bootstrap.pypa.io/get-pip.py','/tmp/get-pip.py'), subprocess.check_call([sys.executable,'/tmp/get-pip.py']))\"",
+  "python -m pip install --upgrade pip setuptools wheel",
+  "python -m pip install -r backend/requirements.txt",
+  "cd frontend && npm ci"
+]
+
+[phases.build]
+cmds = [
+  "cd frontend && npm run build"
+]
+
+[start]
+cmd = "cd backend && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
