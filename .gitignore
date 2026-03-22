@@ -37,5 +37,4 @@ Thumbs.db
 .idea/
 *.swp
 
-# Data (large JSONL files should not be committed)
-sap-o2c-data/
+# sap-o2c-data/ — included in repo (needed for Railway deployment, only 3.7 MB)
