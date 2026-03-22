@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    container_name: o2c-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./sap-o2c-data:/sap-o2c-data:ro
+      - o2c-data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: o2c-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  o2c-data:

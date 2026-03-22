@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+env/
+
+# Env files
+.env
+backend/.env
+
+# DuckDB / graph cache
+backend/data/
+*.duckdb
+*.pkl
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Docker
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Data (large JSONL files should not be committed)
+sap-o2c-data/
