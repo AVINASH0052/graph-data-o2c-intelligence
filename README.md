@@ -2,6 +2,9 @@
 
 A graph-based data modeling and query system over SAP Order-to-Cash (O2C) process data. Natural language queries are answered by a 4-stage LLM pipeline that routes to DuckDB SQL or NetworkX graph traversal, then streams a narrated response back to the browser.
 
+**Live demo:** https://graph-data-o2c-intelligence-production-2dfd.up.railway.app  
+**GitHub:** https://github.com/AVINASH0052/graph-data-o2c-intelligence
+
 ---
 
 ## Architecture
@@ -163,11 +166,18 @@ docker compose up --build
 
 ## Deploying to Railway
 
+The repo includes a root-level `Dockerfile` that builds the frontend and backend into a single image. Railway uses this automatically via `railway.toml`.
+
 1. Push this repo to GitHub.
-2. Create a new Railway project → "Deploy from GitHub repo".
-3. Add two services: `backend/` and `frontend/`.
-4. Set `NVIDIA_API_KEY` environment variable on the backend service.
-5. Set `VITE_API_URL=https://<backend-railway-domain>` as a build variable on the frontend service.
+2. Create a new Railway project → "Deploy from GitHub repo" → select this repo.
+3. Railway will detect `railway.toml` and use the root `Dockerfile` automatically.
+4. Set these environment variables on the service:
+   - `NVIDIA_API_KEY` — your NVIDIA NIM key
+   - `NVIDIA_BASE_URL` — `https://integrate.api.nvidia.com/v1`
+   - `NVIDIA_MODEL` — `mistralai/mistral-large-3-675b-instruct-2512`
+   - `CORS_ORIGINS` — your Railway public URL (or `*` to allow all)
+5. Under **Settings → Networking**, click **Generate Domain** to get a public URL.
+6. The single service serves both the API (`/api/...`) and the React frontend (`/`).
 
 ---
 
@@ -192,7 +202,7 @@ graph-data/
 │   │   └── store/         # Zustand global state
 │   ├── package.json
 │   └── Dockerfile
-├── sap-o2c-data/          # JSONL source files (not committed)
+├── sap-o2c-data/          # JSONL source files (committed, 3.7 MB)
 ├── docker-compose.yml
 └── railway.toml
 ```
